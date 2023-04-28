@@ -1,0 +1,123 @@
+Configure the git:->
+git config --global user.name  your_name
+git config --global user.email your_email
+
+checking configuration:->
+git config --global user.name
+git config --global user.email
+
+PERFORM "GIT COMMIT", SO THAT GIT CAN TRACK YOUR FILES
+
+Git commit:->
+git commit 
+git commit "your message..."
+
+list your all files:->
+ls
+
+Checking the current working directory:->
+pwdwh
+
+
+Check git status:->
+git status
+
+Restore your files with last commit:->
+git restore file_name
+
+restoring all files:
+git restore dot_operator (.)
+
+git checkout file_name
+git checkout -f (for all files restoring)
+
+
+Adding files to stagging area:->
+git add <file_name> [For single file]
+git add -A [For multiple files]
+
+
+checking the log:->
+git log
+git log -p -1(number of log to appear)
+
+
+Skipped stagging area and direct commit:->
+git commit -a -m  "Your message..."
+
+Check difference with current working tree and stagging area:->
+git diff
+
+Mapping stagging area with last commit:->
+git diff --staged
+
+
+To unstage a file:->
+git rm --cached file_name
+note: file will be un-staged but exist in disk storage
+
+To completely remove/delete a file:->
+git rm file_name
+
+
+For quick summary:->
+git status -s
+
+first box denote: stagging area
+second box denote: working tree
+
+
+To ignore the files:->
+
+(1)create a file:
+touch .gitignore
+note: write file_name in gitignore to which you have to ignore
+
+(2) create a file to be ignored:
+e.g log files,binary files,byte files, class files or auto generated files.
+
+IN gitignore file:
+*.file extension  
+ignore all files with above extension
+
+/file_name
+ignore file_name only in current woking directory
+
+
+Branches:->
+
+check branch:
+git branch
+
+Create branch:
+git branch branch_name
+
+Switch to branch_name:
+git checkout branch_name
+git switch branch_name
+
+
+Direct create and switch to branch:->
+git checkot
+
+
+Merge branch_name to master branch:
+
+first switch on "master" branch.
+git merge branch_name
+
+deleting a branch:
+git branch --delete branch_name
+
+
+push on github:->
+git push origin branch_name
+
+
+Cloning project from github:->
+copy http clone from github to which to be copied
+create a local folder
+open git bash on it
+command:
+git clone your_link_paste_here folder_name_to_be_cloned_in
+
