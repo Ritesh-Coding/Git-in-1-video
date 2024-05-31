@@ -1,0 +1,110 @@
+import random
+
+board_size = 100
+
+def initialize_snakes_and_ladders(num_snakes, num_ladders):
+    snakes = {}
+    ladders = {}
+
+    all_positions = set(range(2, board_size))  
+
+   
+    while len(snakes) < num_snakes:
+        start = random.choice(list(all_positions))
+        end = random.choice(list(range(1, start)))
+        if start not in snakes and start not in ladders and end not in snakes and end not in ladders:
+            snakes[start] = end
+            all_positions.discard(start)
+            all_positions.discard(end)
+
+   
+    while len(ladders) < num_ladders:
+        start = random.choice(list(all_positions))
+        end = random.choice(list(range(start + 1, board_size + 1)))
+        if start not in snakes and start not in ladders and end not in snakes and end not in ladders:
+            ladders[start] = end
+            all_positions.discard(start)
+            all_positions.discard(end)
+
+    return snakes, ladders
+
+def print_board(players_positions):
+    
+    board_elements = {i: '' for i in range(1, board_size + 1)}
+
+    for start, end in snakes.items():
+        board_elements[start] += 'S'
+        board_elements[end] += 'D'
+    for start, end in ladders.items():
+        board_elements[start] += 'L'
+        board_elements[end] += 'U'
+    for idx, pos in enumerate(players_positions):
+        if pos > 0:
+            board_elements[pos] += str(idx + 1)
+
+    # Convert board_elements to a list for easier row printing
+    board = [board_elements[i + 1].zfill(2) if board_elements[i + 1] else str(i + 1).zfill(2) for i in range(board_size)]
+
+    for i in range(9, -1, -1):
+        row = board[i * 10:(i + 1) * 10]
+        if (i + 1) % 2 == 0:
+            row = row[::-1]
+        print(' | '.join(row))
+        print('-' * 49)
+    print()
+
+def roll_dice(limit=6):
+    return random.randint(1, limit)
+
+
+def play_game(num_players):
+    players_positions = [0] * num_players
+    while True:
+        for player in range(num_players):
+            six_count = 0
+            while True:
+                input(f"Player {player + 1}'s turn. Press Enter to roll the dice...")
+                if six_count < 2:
+                    dice_value = roll_dice()
+                else:
+                    dice_value = roll_dice(5)
+                print(f"Player {player + 1} rolled a {dice_value}.")
+                new_position = players_positions[player] + dice_value
+                
+                if new_position > board_size:
+                    new_position = players_positions[player]  
+                elif new_position in snakes:
+                    print(f"Oops! Player {player + 1} got bitten by a snake. Going down from {new_position} to {snakes[new_position]}.")
+                    new_position = snakes[new_position]
+                elif new_position in ladders:
+                    print(f"Yay! Player {player + 1} climbed a ladder. Going up from {new_position} to {ladders[new_position]}.")
+                    new_position = ladders[new_position]
+                
+                players_positions[player] = new_position
+                print_board(players_positions)
+                
+                if new_position == board_size:
+                    print(f"Congratulations! Player {player + 1} has won the game!")
+                    return
+
+                if dice_value == 6:
+                    six_count += 1
+                    if six_count == 3:
+                        six_count = 0  
+                else:
+                    break  
+
+
+if __name__ == "__main__":
+    num_players = int(input("Enter the number of players (1, 2, or 3): "))
+    while num_players not in [1, 2, 3]:
+        print("Invalid number of players. Please enter 1, 2, or 3.")
+        num_players = int(input("Enter the number of players (1, 2, or 3): "))
+    
+    num_snakes = int(input("Enter the number of snakes: "))
+    num_ladders = int(input("Enter the number of ladders: "))
+
+    
+    snakes, ladders = initialize_snakes_and_ladders(num_snakes, num_ladders)
+
+    play_game(num_players)
